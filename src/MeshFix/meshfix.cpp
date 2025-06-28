@@ -189,6 +189,7 @@ extern "C" int fixMesh(
     return 0;
 }
 
+#ifndef MESHFIX_NO_MAIN
 int main(int argc, char *argv[])
 {
     if (argc < 2) usage();
@@ -213,3 +214,4 @@ int main(int argc, char *argv[])
     else createFilename(infilename, "_fixed", outfilename, extension);
     return fixMesh(infilename, outfilename, join_multiple_components, stl_output, skip_if_fixed);
 }
+#endif
