@@ -2,7 +2,7 @@
 # General Informations
 ################################################################################
 
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.5)
 project(MeshFix)
 
 ################################################################################
@@ -40,7 +40,13 @@ set(SOURCES
 
 add_executable(MeshFix ${SOURCES})
 
+add_library(meshfix_shared SHARED ${SOURCES})
+
 target_include_directories(MeshFix PUBLIC
+		include/TMesh
+		include/Kernel
+)
+target_include_directories(meshfix_shared PUBLIC
 		include/TMesh
 		include/Kernel
 )
@@ -50,6 +56,7 @@ target_include_directories(MeshFix PUBLIC
 if(CMAKE_SIZEOF_VOID_P EQUAL 8)
 	message(STATUS "64 bits compiler detected")
 	target_compile_definitions(MeshFix PUBLIC -DIS64BITPLATFORM)
+	target_compile_definitions(meshfix_shared PUBLIC -DIS64BITPLATFORM)
 	set(BIN_FOLDER "bin64")
 else()
 	message(STATUS "32 bits compiler detected")
@@ -61,6 +68,13 @@ endif()
 set_target_properties(MeshFix
 	PROPERTIES
 	RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${BIN_FOLDER}"
+)
+set_target_properties(meshfix_shared
+    PROPERTIES
+    OUTPUT_NAME "meshfix"
+    LIBRARY_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${BIN_FOLDER}"
+    CXX_STANDARD 11
+    CXX_STANDARD_REQUIRED ON
 )
 
 # Use C++11
