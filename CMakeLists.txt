@@ -42,6 +42,16 @@ add_executable(MeshFix ${SOURCES})
 
 add_library(meshfix_shared SHARED ${SOURCES})
 
+# Add static library for Windows to generate meshfix.lib
+if(WIN32)
+    add_library(meshfix_static STATIC ${SOURCES})
+    set_target_properties(meshfix_static PROPERTIES OUTPUT_NAME "meshfix")
+    target_include_directories(meshfix_static PUBLIC
+        include/TMesh
+        include/Kernel
+    )
+endif()
+
 target_include_directories(MeshFix PUBLIC
 		include/TMesh
 		include/Kernel
